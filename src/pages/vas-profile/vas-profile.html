@@ -1,0 +1,163 @@
+
+<ion-header>
+  <ion-navbar color="tabbs">
+    <ion-title text-center>
+    	<span style="float: left">
+    		<img src="assets/imgs/school_lms.png" width="40px" height="40px">
+    	</span>
+    	<span padding>
+    		<h3 style="display: inline;">Profile&nbsp;&nbsp;&nbsp;<ion-icon name="person"></ion-icon></h3>
+    	</span>
+	</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+	<ion-grid no-padding>
+		<ion-row>
+			<ion-col col-sm-0 col-0 col-md-3>
+			</ion-col>
+			<ion-col col-sm-12 col-12 col-md-6>
+				<ion-item no-lines color="tabbs">
+					<ion-buttons end padding-vertical>
+						<button ion-button small color="tabbs2" (click)="edit()" >
+				  			<ion-icon name="ios-create" start></ion-icon>&nbsp;&nbsp; Company 
+				  		</button>
+				  		<button ion-button small color="tabbs2" (click)="edit()" >
+				  			<ion-icon name="ios-create" start></ion-icon>&nbsp;&nbsp; User 
+				  		</button>
+				  	</ion-buttons>
+					<div text-center>
+						<img src="{{image}}" width="200px" height="200px" class="round" alt="User display picture"/>
+					</div>
+					<h1 text-center>	
+				  		{{user?.firstname}} {{user?.lastname}} 
+				    </h1>
+				    <h2 text-center> ~ {{user?.role[2]}} </h2>
+				    <ion-buttons end>
+				    	<button ion-button (click)="logout()">
+				    		<ion-icon name="power"></ion-icon>
+				    	</button>
+				    </ion-buttons>
+				</ion-item>
+				<ion-grid no-padding *ngIf="!editProfile">
+					<ion-row>
+						<ion-col col-3>
+							<button ion-button full color="secondary" (click)="showAlert('App store', 'download apps')">
+								<ion-icon name="appstore"></ion-icon>
+							</button>
+						</ion-col>
+						<ion-col col-3 >
+							<button ion-button full (click)="showAlert('Investments', 'Manage your investments')">
+								<ion-icon name="trending-up"></ion-icon>
+							</button>
+						</ion-col>
+						<ion-col col-3>
+							<button ion-button full color="danger" (click)="showAlert('Online shopping', 'Shop online for whatever')">
+								<ion-icon name="cart"></ion-icon>
+							</button>
+						</ion-col>
+						<ion-col col-3>
+							<button ion-button full (click)="showAlert('eWallet', 'Manage your electronic wallet')">
+								wallet
+							</button>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+				<ion-grid *ngIf="!editProfile">
+					<ion-row>
+						<ion-col col-6 col-md-6>
+							Earning type
+						</ion-col>
+						<ion-col col-6 col-md-6>
+							Amount
+						</ion-col>
+					</ion-row>
+					<ion-row>
+						<ion-col col-6 col-md-6>
+							Available
+						</ion-col>
+						<ion-col col-6 col-md-6>
+							0.00
+						</ion-col>
+					</ion-row>
+					<ion-row>
+						<ion-col col-6 col-md-6>
+							Savings
+						</ion-col>
+						<ion-col col-6 col-md-6>
+							0.00
+						</ion-col>
+					</ion-row>
+					<ion-row>
+						<ion-col col-6 col-md-6>
+							Total
+						</ion-col>
+						<ion-col col-6 col-md-6>
+							0.00
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+				<div *ngIf="editProfile">
+					<ion-item>
+					  <ion-label>Title</ion-label>
+					  <ion-select [(ngModel)]="user.title" required>
+					    <ion-option value="Mr">Mr</ion-option>
+					    <ion-option value="Mrs">Mrs</ion-option>
+					    <ion-option value="Ms">Ms</ion-option>
+					    <ion-option value="Dr">Dr</ion-option>
+					    <ion-option value="Other">Other</ion-option>
+					  </ion-select>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>First Name</ion-label>
+					  <ion-input type="text" [(ngModel)]="user.firstname" required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Last Name</ion-label>
+					  <ion-input type="text" [(ngModel)]="user.lastname" required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Identity/Passport number</ion-label>
+					  <ion-input type="password" [(ngModel)]="user.id_or_password" required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Confirm Identity/Passport number</ion-label>
+					  <ion-input type="password" required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label>Gender</ion-label>
+					  <ion-select [(ngModel)]="user.gender" required>
+					    <ion-option value="Male">Male</ion-option>
+					    <ion-option value="Female">Female</ion-option>
+					    <ion-option value="N/A">N/A</ion-option>
+					  </ion-select>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Cell Number</ion-label>
+					  <ion-input type="number" [(ngModel)]="user.cell_number" required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Home Number</ion-label>
+					  <ion-input type="number" [(ngModel)]="user.home_number"  required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Work Number</ion-label>
+					  <ion-input type="number" [(ngModel)]="user.work_number"  required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Email Address</ion-label>
+					  <ion-input type="email" [(ngModel)]="user.email"  required></ion-input>
+					</ion-item>
+					<ion-buttons end padding>
+						<button ion-button>Save</button>
+					</ion-buttons>
+				</div>
+			</ion-col>
+			<ion-col col-sm-0 col-0 col-md-3>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+
+</ion-content>
