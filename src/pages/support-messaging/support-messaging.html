@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar color="tabbs">
+    <ion-title text-center>
+    	<span style="float: left">
+    		<img src="assets/imgs/school_lms.png" width="40px" height="40px">
+    	</span>
+    	<span padding>
+    		<h3 style="display: inline;">Messaging &nbsp;&nbsp;&nbsp;<ion-icon name="chatboxes"></ion-icon></h3>
+    	</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+	<ion-grid>
+		<ion-row>
+			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+			</ion-col>
+			<ion-col col-12 col-sm-12 col-md-12 col-lg-6>
+				<h1 text-center style="font weight: 10px; color: #7F8C8D;"> Issues </h1>
+				<ion-item *ngFor="let msg of messages | async">
+					<p>{{(msg[0]?.by?.firstname.length > 0 ) || (msg[0]?.by?.firstname.length != undefined ) ?  msg[0]?.by?.firstname : 'anonymous'}} ~ {{(msg[0]?.by?.role[0].length > 0)  ?  msg[0]?.by?.role[0] : 'no role provided'}} </p>
+				</ion-item>
+			</ion-col>
+			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>

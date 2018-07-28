@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { LocalDbProvider } from '../../providers/local-db/local-db';
+import { RemoteSyncProvider } from '../../providers/remote-sync/remote-sync';
+import { User } from '../../models/user.interface';
+import { VAS } from '../../models/vas.interface';
+import { School } from '../../models/school.interface';
+import { ObjectInitializerProvider } from '../../providers/object-initializer/object-initializer';
 
 /**
  * Generated class for the VasUsersPage page.
@@ -15,11 +21,26 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class VasUsersPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  vas: VAS;
+  suppliers: VAS[] = [];
+  schools: School[] = [];
+  searchTxt: string = '';
+  constructor(public navCtrl: NavController, public navParams: NavParams, private local_db: LocalDbProvider, 
+  	private remote_sync: RemoteSyncProvider, private object_init: ObjectInitializerProvider){
+  	this.vas = this.object_init.initializeVAS();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad VasUsersPage');
+  ionViewDidLoad(){
+  	this.local_db.getCurrentUser().then(vas =>{
+  		this.remote_sync.getVAS(vas.company_id).subscribe(supplier =>{
+  			this.vas = supplier;
+  		})
+
+  		this.remote_sync.getAllSchools().subscribe(schools =>{
+  			this.schools = schools;
+  		})
+  	})
+  	.catch(err => console.log(err))
   }
 
 }

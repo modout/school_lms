@@ -27,20 +27,48 @@
 			</ion-col>
 			<ion-col col-12 col-sm-12 col-md-12 col-lg-6>
 				
-				<ion-item no-lines color="tabbs">
+				<ion-item no-lines color="tabbs" *ngIf="showSchool" text-wrap>
 					<ion-buttons end padding-vertical>
-						<button ion-button small color="tabbs2" (click)="edit()" >
-				  			<ion-icon name="ios-create" start></ion-icon>&nbsp;&nbsp; School 
+						<button ion-button small color="tabbs2" (click)="toggleUser()" >
+				  			<ion-icon name="ios-create"></ion-icon> 
 				  		</button>
-				  		<button ion-button small color="tabbs2" (click)="edit()" >
-				  			<ion-icon name="ios-create" start></ion-icon>&nbsp;&nbsp; User 
+						<button ion-button small color="tabbs2" (click)="toggleUser()" >
+				  			<ion-icon name="school" start></ion-icon> 
+				  		</button>
+				  		<button ion-button small color="tabbs2" (click)="toggleUser()" >
+				  			<ion-icon name="person" start></ion-icon> 
 				  		</button>
 				  	</ion-buttons>
 					<div text-center>
-						<img src="{{image}}" width="200px" height="200px" class="round" alt="User display picture"/>
+						<img src="{{school?.emblem}}" width="200px" height="200px" class="round" alt="User display picture"/>
 					</div>
 					<h1 text-center>	
-				  		{{user?.firstname}} {{user?.lastname}} 
+				  		{{school?.name}} 
+				    </h1>
+				    <ion-buttons end>
+				    	<button clear ion-button (click)="logout()">
+				    		<ion-icon name="power"></ion-icon>
+				    	</button>
+				    </ion-buttons>
+				</ion-item>
+				
+				<ion-item no-lines color="tabbs" *ngIf="showUser" text-wrap>
+					<ion-buttons end padding-vertical>
+						<button ion-button small color="tabbs2" (click)="toggleUser()" >
+				  			<ion-icon name="ios-create"></ion-icon> 
+				  		</button>
+						<button ion-button small color="tabbs2" (click)="toggleUser()" >
+				  			<ion-icon name="school" start></ion-icon> 
+				  		</button>
+				  		<button ion-button small color="tabbs2" (click)="toggleUser()" >
+				  			<ion-icon name="person" start></ion-icon> 
+				  		</button>
+				  	</ion-buttons>
+					<div text-center>
+						<img src="{{school?.user?.dp}}" width="200px" height="200px" class="round" alt="User display picture"/>
+					</div>
+					<h1 text-center>	
+				  		{{school?.profile?.firstname}} {{school?.profile?.lastname}} 
 				    </h1>
 				    <ion-buttons end>
 				    	<button ion-button (click)="logout()">
@@ -48,9 +76,34 @@
 				    	</button>
 				    </ion-buttons>
 				</ion-item>
+				<ion-grid no-padding>
+					<ion-row>
+						<ion-col col-3>
+							<button ion-button full color="secondary" (click)="showAlert('App store', 'download apps')">
+								<ion-icon name="appstore"></ion-icon>
+							</button>
+						</ion-col>
+						<ion-col col-3 >
+							<button ion-button full (click)="showAlert('Investments', 'Manage your investments')">
+								<ion-icon name="trending-up"></ion-icon>
+							</button>
+						</ion-col>
+						<ion-col col-3>
+							<button ion-button full color="danger" (click)="showAlert('Online shopping', 'Shop online for whatever')">
+								<ion-icon name="cart"></ion-icon>
+							</button>
+						</ion-col>
+						<ion-col col-3>
+							<button ion-button full (click)="showAlert('eWallet', 'Manage your electronic wallet')">
+								wallet
+							</button>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
 				<ion-buttons *ngIf="profileChanged" end>
 					<button ion-button color="secondary" (click)="saveChanges()">save</button>
 				</ion-buttons>
+			<diV *ngIf="showSchool">
 				<ion-item text-wrap *ngIf="!changeName">
 					<h3 stacked>School</h3>
 					<p> {{school?.name}} </p>
@@ -65,11 +118,11 @@
 				</ion-buttons>
 				<ion-item text-wrap *ngIf="!changePricipal">
 					<h3 stacked>Principal</h3>
-					<p> {{school?.principal}} </p>
+					<p> {{school?.principal?.firstname}} {{school?.principal?.lastname}}</p>
 				</ion-item>
 				<ion-item text-wrap *ngIf="changePricipal">
 					<ion-label stacked>Principal</ion-label>
-					<ion-input type="text" [(ngModel)]="school.principal" style="overflow-x: wrap;">
+					<ion-input type="text" [(ngModel)]="school.principal.firstname" style="overflow-x: wrap;">
 					</ion-input>
 				</ion-item>
 				<ion-buttons end>
@@ -77,25 +130,78 @@
 				</ion-buttons>
 				<ion-item>
 					<h3>Country</h3>
-					<p>{{school?.country}}</p>
+					<p>{{school?.address?.country}}</p>
 				</ion-item>
 				<ion-item>
 					<h3>Province</h3>
-					<p>{{school?.province}}</p>
+					<p>{{school?.address?.province}}</p>
 				</ion-item>
 				<ion-item>
 					<h3>District</h3>
-					<p>{{school?.district}}</p>
+					<p>{{school?.address?.district}}</p>
 				</ion-item>
 				<ion-item>
 					<h3>GPS Details</h3>
-					<p>lat: &nbsp;&nbsp;&nbsp;{{school?.lat}}</p>
-					<p>lng: &nbsp;&nbsp;&nbsp;{{school?.lng}}</p>
+					<p>lat: &nbsp;&nbsp;&nbsp;{{school?.address?.lat}}</p>
+					<p>lng: &nbsp;&nbsp;&nbsp;{{school?.address?.lng}}</p>
 				</ion-item>
 				<ion-item>
 					<h3>Postal Code</h3>
-					<p>{{school?.postal_code}}</p>
+					<p>{{school?.address?.postal_code}}</p>
 				</ion-item>
+			</diV>
+			<div *ngIf="showUser">
+					<ion-item>
+					  <ion-label>Title</ion-label>
+					  <ion-select [(ngModel)]="school.profile.title" required>
+					    <ion-option value="Mr">Mr</ion-option>
+					    <ion-option value="Mrs">Mrs</ion-option>
+					    <ion-option value="Ms">Ms</ion-option>
+					    <ion-option value="Dr">Dr</ion-option>
+					    <ion-option value="Other">Other</ion-option>
+					  </ion-select>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>First Name</ion-label>
+					  <ion-input type="text" [(ngModel)]="school.profile.firstname" required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Last Name</ion-label>
+					  <ion-input type="text" [(ngModel)]="school.profile.lastname" required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Identity/Passport number</ion-label>
+					  <ion-input type="password" [(ngModel)]="school.profile.id_or_password" required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label>Gender</ion-label>
+					  <ion-select [(ngModel)]="school.profile.gender" required>
+					    <ion-option value="Male">Male</ion-option>
+					    <ion-option value="Female">Female</ion-option>
+					    <ion-option value="N/A">N/A</ion-option>
+					  </ion-select>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Cell Number</ion-label>
+					  <ion-input type="number" [(ngModel)]="school.profile.cell_number" required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Home Number</ion-label>
+					  <ion-input type="number" [(ngModel)]="school.profile.home_number"  required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Work Number</ion-label>
+					  <ion-input type="number" [(ngModel)]="school.profile.work_number"  required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Email Address</ion-label>
+					  <ion-input type="email" [(ngModel)]="school.profile.email"  required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>uid</ion-label>
+					  <p>{{school?.profile?.uid}}</p>
+					</ion-item>
+				</div>
 			</ion-col>
 			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>
 			</ion-col>

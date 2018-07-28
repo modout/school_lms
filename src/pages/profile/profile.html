@@ -17,26 +17,27 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-	<ion-grid no-padding>
+<ion-content>
+	<ion-grid>
 		<ion-row>
-			<ion-col col-sm-0 col-0 col-md-3>
+			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>
 			</ion-col>
-			<ion-col col-sm-12 col-12 col-md-6>
+			<ion-col col-12 col-sm-12 col-md-12 col-lg-6>
 				<ion-item no-lines color="tabbs">
-					<ion-buttons end>
-				  		<button ion-button small color="tabbs2" (click)="edit()">
-				  			<ion-icon name="ios-create" start></ion-icon>&nbsp;&nbsp; Edit 
+					<ion-buttons end padding-vertical>
+				  		<button ion-button clear style="color: white" (click)="edit()">
+				  			<ion-icon name="ios-create" start></ion-icon> 
 				  		</button>
 				  	</ion-buttons>
 					<div text-center>
-						<img src="{{image}}" width="200px" height="200px" class="round" alt="User display picture"/>
+						<img src="{{user?.profile?.dp}}" width="200px" height="200px" class="round" alt="User display picture"/>
 					</div>
 					<h1 text-center>	
-				  		{{user?.firstname}} {{user?.lastname}} 
+				  		{{user?.profile?.firstname}} {{user?.profile?.lastname}} 
 				    </h1>
+				    <h4 text-center> ~ {{user?.school_name}} ( {{user?.type}} ) </h4>
 				    <ion-buttons end>
-				    	<button ion-button (click)="logout()">
+				    	<button ion-button clear (click)="logout()">
 				    		<ion-icon name="power"></ion-icon>
 				    	</button>
 				    </ion-buttons>
@@ -102,7 +103,7 @@
 				<div *ngIf="editProfile">
 					<ion-item>
 					  <ion-label>Title</ion-label>
-					  <ion-select [(ngModel)]="user.title" required>
+					  <ion-select [(ngModel)]="user.profile.title" required>
 					    <ion-option value="Mr">Mr</ion-option>
 					    <ion-option value="Mrs">Mrs</ion-option>
 					    <ion-option value="Ms">Ms</ion-option>
@@ -112,23 +113,19 @@
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>First Name</ion-label>
-					  <ion-input type="text" [(ngModel)]="user.firstname" required></ion-input>
+					  <ion-input type="text" [(ngModel)]="user.profile.firstname" required></ion-input>
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>Last Name</ion-label>
-					  <ion-input type="text" [(ngModel)]="user.lastname" required></ion-input>
+					  <ion-input type="text" [(ngModel)]="user.profile.lastname" required></ion-input>
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>Identity/Passport number</ion-label>
-					  <ion-input type="password" [(ngModel)]="user.id_or_password" required></ion-input>
-					</ion-item>
-					<ion-item>
-					  <ion-label floating>Confirm Identity/Passport number</ion-label>
-					  <ion-input type="password" required></ion-input>
+					  <ion-input type="password" [(ngModel)]="user.profile.id_or_password" required></ion-input>
 					</ion-item>
 					<ion-item>
 					  <ion-label>Gender</ion-label>
-					  <ion-select [(ngModel)]="user.gender" required>
+					  <ion-select [(ngModel)]="user.profile.gender" required>
 					    <ion-option value="Male">Male</ion-option>
 					    <ion-option value="Female">Female</ion-option>
 					    <ion-option value="N/A">N/A</ion-option>
@@ -136,26 +133,30 @@
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>Cell Number</ion-label>
-					  <ion-input type="number" [(ngModel)]="user.cell_number" required></ion-input>
+					  <ion-input type="number" [(ngModel)]="user.profile.cell_number" required></ion-input>
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>Home Number</ion-label>
-					  <ion-input type="number" [(ngModel)]="user.home_number"  required></ion-input>
+					  <ion-input type="number" [(ngModel)]="user.profile.home_number"  required></ion-input>
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>Work Number</ion-label>
-					  <ion-input type="number" [(ngModel)]="user.work_number"  required></ion-input>
+					  <ion-input type="number" [(ngModel)]="user.profile.work_number"  required></ion-input>
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>Email Address</ion-label>
-					  <ion-input type="email" [(ngModel)]="user.email"  required></ion-input>
+					  <ion-input type="email" [(ngModel)]="user.profile.email"  required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>uid</ion-label>
+					  <p>{{user?.profile?.uid}}</p>
 					</ion-item>
 					<ion-buttons end padding>
 						<button ion-button>Save</button>
 					</ion-buttons>
 				</div>
 			</ion-col>
-			<ion-col col-sm-0 col-0 col-md-3>
+			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>
 			</ion-col>
 		</ion-row>
 	</ion-grid>

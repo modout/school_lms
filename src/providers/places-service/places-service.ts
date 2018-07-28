@@ -11,10 +11,31 @@ export class PlacesServiceProvider {
     console.log('Hello PlacesServiceProvider Provider');
   }
 
-  getPlacePredictionsSA(searchText: string, service: any):Promise<any[]>{
+  getAdressPredictionsSA(searchText: string, service: any):Promise<any[]>{
     if(searchText != undefined && searchText != null && searchText.length > 1){
         return new Promise<any>((resolve, reject) =>{
-          service.getPlacePredictions({ input: searchText, componentRestrictions: {country: 'za'} }, 
+          service.getPlacePredictions({ input: searchText, componentRestrictions: {country: 'za'},  types: ['address'] }, 
+          (predictions, status) =>{
+            if (status != google.maps.places.PlacesServiceStatus.OK){
+              reject(new Error(status));
+            }else{
+              resolve(predictions);
+            }
+          });
+        }) 
+    }else{
+      return new Promise<any>((resolve, reject) =>{
+        resolve([]);
+      })
+    }
+  }
+
+
+  getEstablishmentPredictionsSA(searchText: string, service: any):Promise<any[]>{
+    if(searchText != undefined && searchText != null && searchText.length > 1){
+        return new Promise<any>((resolve, reject) =>{
+          service.getPlacePredictions({ input: searchText, componentRestrictions: {country: 'za'},  types: ['establishment'], 
+            type: 'shool' }, 
           (predictions, status) =>{
             if (status != google.maps.places.PlacesServiceStatus.OK){
               reject(new Error(status));
@@ -43,7 +64,8 @@ export class PlacesServiceProvider {
           name: results[0].formatted_address,
           vicinity: results[0].formatted_address,
           country_long: '',
-          country_short: ''
+          country_short: '',
+          place_id: results[0].place_id
         }
         //console.log('results: ', results);
         results[0].address_components.forEach(comp =>{
@@ -72,6 +94,13 @@ export class PlacesServiceProvider {
                 case "postal_code":
                 place.postal_code = comp.long_name;
                 break;
+                case "name":
+                place.name = comp.long_name;
+                break;
+                case "vicinity":
+                place.vicinity = comp.long_name;
+                break;
+
             }
           })
         })

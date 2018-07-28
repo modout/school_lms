@@ -2,13 +2,10 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { UserRolesProvider } from '../../providers/user-roles/user-roles'
 import { FilteringProvider } from '../../providers/filtering/filtering';
-import { LocalDbProvider } from '../../providers/local-db/local-db'
-/**
- * Generated class for the SchoolDetailsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { LocalDbProvider } from '../../providers/local-db/local-db';
+import { School } from '../../models/school.interface';
+import { ObjectInitializerProvider } from '../../providers/object-initializer/object-initializer';
+
 
 @IonicPage()
 @Component({
@@ -19,17 +16,11 @@ export class SchoolDetailsPage {
 
   predictions: string[] = [];
   searchTxt: string = '';
-  school = {
-  	name: '',
-  	province: '',
-  	district: '',
-  	id: ''
-  }
+  school: School;
   constructor(public navCtrl: NavController, public navParams: NavParams, private user_roles_svc: UserRolesProvider,
-  	private filtering_svc: FilteringProvider, private local_db: LocalDbProvider, private view: ViewController){
-  }
-
-  ionViewDidLoad(){
+  	private filtering_svc: FilteringProvider, private local_db: LocalDbProvider, private view: ViewController,
+    private object_init_service: ObjectInitializerProvider){
+    this.school = this.object_init_service.initializeSchool();
   }
 
   school_autocomplete(){
@@ -45,6 +36,7 @@ export class SchoolDetailsPage {
 
   done():Promise<any>{
   	this.view.dismiss();
+    
   	return this.local_db.setSchool(this.school)
   }
 

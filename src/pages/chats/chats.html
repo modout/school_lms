@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-navbar color="tabbs">
+    <ion-title text-center>
+    	<span style="float: left">
+    		<img src="assets/imgs/school_lms.png" width="40px" height="40px">
+    	</span>
+    	<span padding>
+    		<h3 style="display: inline;">Messaging &nbsp;&nbsp;&nbsp;<ion-icon name="chatboxes"></ion-icon></h3>
+    	</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+	<ion-grid>
+		<ion-row>
+			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+			</ion-col>
+			<ion-col col-12 col-sm-12 col-md-12 col-lg-6>
+				<ion-buttons>
+					<button ion-button end>
+						<ion-icon name="construct" class="chat_channel_button" (click)="gotoSupport()" ></ion-icon>
+					</button>
+					<!-- <button ion-button end>
+						<ion-icon name="contact" class="chat_channel_button"></ion-icon>
+					</button> -->
+					<!-- <button ion-button end (click)="displayChannels()">
+						<ion-icon name="contacts" class="chat_channel_button"></ion-icon>
+					</button> -->
+					<button ion-button end (click)="newChannel()" >
+						<ion-icon name="add" class="chat_channel_button"></ion-icon>
+					</button>
+				</ion-buttons>
+
+		        <div *ngIf="addChannel" padding-vertical>
+		        	<h2 text-center>Add new group</h2>
+		            <ion-item>
+		              <ion-label stacked>Group name</ion-label>
+		              <ion-input [(ngModel)]="channel.name"></ion-input>
+		            </ion-item>
+		            <ion-buttons margin-vertical>
+		              <button ion-button (click)="saveChannel()">Save Channel</button>
+		              <button ion-button color="danger" (click)="cancel()" >Cancel</button>
+		            </ion-buttons>
+		        </div>
+				<ion-item *ngIf="showChannelList" padding-vertical no-lines >
+					<h1>My Groups</h1>
+					<ion-item *ngFor="let channel of userChannels" padding (click)="gotoChannel(channel)">
+						<ion-icon name='ios-git-network' color="light-gray" item-start></ion-icon>
+						{{channel?.name}}
+					</ion-item>
+				</ion-item>
+			</ion-col>
+			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>

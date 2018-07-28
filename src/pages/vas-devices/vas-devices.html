@@ -39,26 +39,32 @@
 				<ion-list>
 					<ion-grid>
 						<ion-row>
-							<ion-col col-4>
-								<h3>Model no</h3>
+							<ion-col col-3>
+								<em><b>Model no</b></em>
 							</ion-col>
-							<ion-col col-4>
-								<h3>Type</h3>
+							<ion-col col-3>
+								<em><b>Type</b></em>
 							</ion-col>
-							<ion-col col-4>
-								<h3>Position</h3>
+							<ion-col col-3>
+								<em><b>Manufacturer</b></em>
+							</ion-col>
+							<ion-col col-3>
+								<em><b>Supplier</b></em>
 							</ion-col>
 						</ion-row>
 						<hr>
-						<ion-row>
-							<ion-col col-4>
-								WAPD-235N_3G
+						<ion-row *ngFor="let device of devices">
+							<ion-col col-3>
+								{{device?.model}}
 							</ion-col>
-							<ion-col col-4>
-								Content Access Point
+							<ion-col col-3>
+								{{device?.type}}
 							</ion-col>
-							<ion-col col-4>
-								Library
+							<ion-col col-3>
+								{{device?.manufacturer}}
+							</ion-col>
+							<ion-col col-3>
+								{{device?.supplier_name}}
 							</ion-col>
 						</ion-row>
 					</ion-grid>

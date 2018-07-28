@@ -1,6 +1,7 @@
 import { Address } from './address.interface'
 
 export interface User{
+	uid?: string;
 	role?: string[];
 	title?: string;
 	firstname?: string;
@@ -14,4 +15,6 @@ export interface User{
 	dp?: any;
 	residential_address?: Address;
 	proof_of_address?: any;
+	affidavit?: any;
+	channels?: string[];
 }

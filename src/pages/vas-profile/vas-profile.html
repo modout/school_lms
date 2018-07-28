@@ -12,31 +12,54 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content padding>
 	<ion-grid no-padding>
 		<ion-row>
 			<ion-col col-sm-0 col-0 col-md-3>
 			</ion-col>
 			<ion-col col-sm-12 col-12 col-md-6>
-				<ion-item no-lines color="tabbs">
+				<ion-item no-lines color="tabbs" *ngIf="showCompany" text-wrap>
 					<ion-buttons end padding-vertical>
-						<button ion-button small color="tabbs2" (click)="edit()" >
-				  			<ion-icon name="ios-create" start></ion-icon>&nbsp;&nbsp; Company 
+						<button ion-button small color="tabbs2" (click)="edit()">
+				  			<ion-icon name="ios-create" start></ion-icon> 
 				  		</button>
-				  		<button ion-button small color="tabbs2" (click)="edit()" >
-				  			<ion-icon name="ios-create" start></ion-icon>&nbsp;&nbsp; User 
+						<button ion-button small color="tabbs2" (click)="toggleCompany()">
+				  			Company 
+				  		</button>
+				  		<button ion-button small color="tabbs2" (click)="toggleUser()">
+				  			<ion-icon name="person" start></ion-icon> 
 				  		</button>
 				  	</ion-buttons>
 					<div text-center>
-						<img src="{{image}}" width="200px" height="200px" class="round" alt="User display picture"/>
+						<img src="{{vas?.company_logo}}" width="200px" height="200px" class="round" alt="User display picture"/>
+					</div>
+				    <h1 text-center> ~ {{ vas?.company_name }} </h1>
+				    <ion-buttons end>
+				    	<button clear ion-button (click)="logout()">
+				    		<ion-icon name="power"></ion-icon>
+				    	</button>
+				    </ion-buttons>
+				</ion-item>
+				<ion-item no-lines color="tabbs" *ngIf="showUser" text-wrap>
+					<ion-buttons end padding-vertical>
+						<button ion-button small color="tabbs2" (click)="edit()">
+				  			<ion-icon name="ios-create" start></ion-icon> 
+				  		</button>
+						<button ion-button small color="tabbs2" (click)="toggleCompany()">
+				  			Company 
+				  		</button>
+				  		<button ion-button small color="tabbs2" (click)="toggleUser()">
+				  			<ion-icon name="person" start></ion-icon> 
+				  		</button>
+				  	</ion-buttons>
+					<div text-center>
+						<img src="{{vas?.user?.dp}}" width="200px" height="200px" class="round" alt="User display picture"/>
 					</div>
 					<h1 text-center>	
-				  		{{user?.firstname}} {{user?.lastname}} 
+				  		{{vas?.profile?.firstname}} {{vas?.profile?.lastname}} 
 				    </h1>
-				    <h2 text-center> ~ {{user?.role[2]}} </h2>
 				    <ion-buttons end>
-				    	<button ion-button (click)="logout()">
+				    	<button clear ion-button (click)="logout()">
 				    		<ion-icon name="power"></ion-icon>
 				    	</button>
 				    </ion-buttons>
@@ -99,10 +122,10 @@
 						</ion-col>
 					</ion-row>
 				</ion-grid>
-				<div *ngIf="editProfile">
+				<div *ngIf="editProfile && showUser">
 					<ion-item>
 					  <ion-label>Title</ion-label>
-					  <ion-select [(ngModel)]="user.title" required>
+					  <ion-select [(ngModel)]="vas.profile.title" required>
 					    <ion-option value="Mr">Mr</ion-option>
 					    <ion-option value="Mrs">Mrs</ion-option>
 					    <ion-option value="Ms">Ms</ion-option>
@@ -112,23 +135,19 @@
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>First Name</ion-label>
-					  <ion-input type="text" [(ngModel)]="user.firstname" required></ion-input>
+					  <ion-input type="text" [(ngModel)]="vas.profile.firstname" required></ion-input>
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>Last Name</ion-label>
-					  <ion-input type="text" [(ngModel)]="user.lastname" required></ion-input>
+					  <ion-input type="text" [(ngModel)]="vas.profile.lastname" required></ion-input>
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>Identity/Passport number</ion-label>
-					  <ion-input type="password" [(ngModel)]="user.id_or_password" required></ion-input>
-					</ion-item>
-					<ion-item>
-					  <ion-label floating>Confirm Identity/Passport number</ion-label>
-					  <ion-input type="password" required></ion-input>
+					  <ion-input type="password" [(ngModel)]="vas.profile.id_or_password" required></ion-input>
 					</ion-item>
 					<ion-item>
 					  <ion-label>Gender</ion-label>
-					  <ion-select [(ngModel)]="user.gender" required>
+					  <ion-select [(ngModel)]="vas.profile.gender" required>
 					    <ion-option value="Male">Male</ion-option>
 					    <ion-option value="Female">Female</ion-option>
 					    <ion-option value="N/A">N/A</ion-option>
@@ -136,23 +155,66 @@
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>Cell Number</ion-label>
-					  <ion-input type="number" [(ngModel)]="user.cell_number" required></ion-input>
+					  <ion-input type="number" [(ngModel)]="vas.profile.cell_number" required></ion-input>
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>Home Number</ion-label>
-					  <ion-input type="number" [(ngModel)]="user.home_number"  required></ion-input>
+					  <ion-input type="number" [(ngModel)]="vas.profile.home_number"  required></ion-input>
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>Work Number</ion-label>
-					  <ion-input type="number" [(ngModel)]="user.work_number"  required></ion-input>
+					  <ion-input type="number" [(ngModel)]="vas.profile.work_number"  required></ion-input>
 					</ion-item>
 					<ion-item>
 					  <ion-label floating>Email Address</ion-label>
-					  <ion-input type="email" [(ngModel)]="user.email"  required></ion-input>
+					  <ion-input type="email" [(ngModel)]="vas.profile.email"  required></ion-input>
 					</ion-item>
 					<ion-buttons end padding>
 						<button ion-button>Save</button>
 					</ion-buttons>
+				</div>
+				<div *ngIf="editProfile && showCompany">
+					<ion-item>
+					  <ion-label floating>Company Name</ion-label>
+					  <ion-input type="text" [(ngModel)]="vas.company_name"  required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Company ID</ion-label>
+					  <ion-input type="text" [(ngModel)]="vas.company_id"  required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Company registration number</ion-label>
+					  <ion-input type="text" [(ngModel)]="vas.company_reg"  required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Company services</ion-label>
+					  <ion-input type="text" [(ngModel)]="vas.service_description"  required></ion-input>
+					</ion-item>
+					<ion-item>
+					  	<ion-label floating>Street Address:</ion-label>
+						<ion-input type="text" [(ngModel)]="adressSearchTxt" (keyup)="getPredictions($event)" required></ion-input>
+					</ion-item>
+					<ion-list>
+						<ion-item *ngFor="let pred of addPredictions" (click)="selectAddress(pred)">
+							{{pred.description}}
+						</ion-item>
+					</ion-list>
+					<ion-item>
+					  <ion-label floating>City:</ion-label>
+					  <ion-input type="text" [(ngModel)]="vas.address.city" required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Province:</ion-label>
+					  <ion-input type="text" [(ngModel)]="vas.address.province" required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Postal Code:</ion-label>
+					  <ion-input type="text" [(ngModel)]="vas.address.postal_code" required></ion-input>
+					</ion-item>
+					<ion-item>
+					  <ion-label floating>Country:</ion-label>
+					  <ion-input type="text" [(ngModel)]="vas.address.country" required></ion-input>
+					</ion-item>
 				</div>
 			</ion-col>
 			<ion-col col-sm-0 col-0 col-md-3>

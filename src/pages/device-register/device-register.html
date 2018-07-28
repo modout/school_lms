@@ -1,0 +1,68 @@
+<!--
+  Generated template for the DeviceRegisterPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Device register</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+      </ion-col>
+      <ion-col col-12 col-sm-12 col-md-12 col-lg-6>
+        <h2 text-center>Register a device</h2>
+  <fieldset>
+    <legend>School &amp; Supplier details</legend>
+    <ion-item padding>
+      <ion-label stacked>School Name</ion-label>
+      <ion-input type="text" [(ngModel)]="searchTxt" (keyup)="school_autocomplete()" autocorrect="off"></ion-input>
+    </ion-item>
+    <ion-list>
+      <ion-item *ngFor="let pred of predictions" (click)="selectSchool(pred)">
+        {{pred}}
+      </ion-item>
+    </ion-list>
+    <ion-item padding>
+      <ion-label stacked>Supplier Name</ion-label>
+      <ion-input type="text" [(ngModel)]="supplierTxt" (keyup)="supplierAutocomplete()" autocorrect="off"></ion-input>
+    </ion-item>
+    <ion-list>
+      <ion-item *ngFor="let pred of supplierPredictions" (click)="selectSupplier(pred)">
+        {{pred?.company_name}}
+      </ion-item>
+    </ion-list>
+  </fieldset>
+  <fieldset margin-top>
+   <legend>Device details</legend> 
+   <ion-item>
+    <ion-label>Device type</ion-label>
+    <ion-select  [(ngModel)]="device.type">
+      <ion-option value="tablet">Tablet</ion-option>
+      <ion-option value="laptop">Laptop</ion-option>
+      <ion-option value="Server">Server</ion-option>
+      <ion-option value="SmartBoard">Smart board</ion-option>
+    </ion-select>
+   </ion-item>
+   <ion-item>
+    <ion-label stacked>Model number</ion-label>
+    <ion-input [(ngModel)]="device.model"></ion-input>
+   </ion-item>
+   <ion-item>
+    <ion-label stacked>Manufacturer e.g. Dell</ion-label>
+    <ion-input [(ngModel)]="device.manufacturer"></ion-input>
+   </ion-item>
+  </fieldset>
+    <button ion-button ion-button margin-vertical full color="secondary" (click)="register()">Done</button>
+    </ion-col>
+    <ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+    </ion-col>
+    </ion-row>
+  </ion-grid>
+	
+</ion-content>

@@ -1,11 +1,5 @@
-<!--
-  Generated template for the TimetablePage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
   <ion-navbar color="tabbs">
     <ion-title text-center>
     	<span style="float: left">
@@ -16,10 +10,159 @@
     	</span>
     </ion-title>
   </ion-navbar>
-
 </ion-header>
 
+<ion-content>
+    <ion-grid *ngIf="!showAdd">
+      <ion-row>
+        <ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+        </ion-col>
+        <ion-col col-12 col-sm-12 col-md-12 col-lg-6>
+            <ion-buttons margin-bottom>
+              <button ion-button (click)="gotoSettings()">Settings</button>
+              <button ion-button (click)="gotoSettings()">Cycle view</button>
+              <button ion-button (click)="gotoSettings()">Day view</button>
+              <button ion-button (click)="gotoSettings()">Slot view</button>
+            </ion-buttons>
+            <ion-grid no-padding>
+              <ion-row *ngFor="let day of timetable?.days">
+                <ion-col col-0 col-sm-0 col-md-2>
+                  <div *ngIf="width >  992">
+                    Day {{day?.number}}
+                    <button ion-button margin-vertical style="display: block;" (click)="showAddDialog(day)">add</button>
+                  </div>
+                </ion-col>
+                <ion-col col-12 col-sm-12 col-md-10>
+                  <div *ngIf="width <  992">
+                    <h3 style="display: inline-block;"> day {{day?.number}} </h3>
+                    <button ion-button margin-vertical style="display: inline-block;" (click)="showAddDialog(day)">add</button>
+                  </div>
+                    <div style="overflow-x: scroll; overflow-y: hidden; white-space: nowrap;">
+                        <ion-card *ngFor="let p of day?.periods; let i = index" 
+                          [attr.data-index]="i" text-wrap padding style="display: inline-block; max-width: 200px">
+                          <ion-buttons end>
+                            <button ion-button clear (click)="deletePeriod(day?.number -1, i)">
+                              <ion-icon name="close"></ion-icon>
+                            </button>
+                          </ion-buttons>
+                          <div>
+                            <h1>{{p?.venue}}</h1>
+                            <p>{{p?.description}}</p>
+                            <p>{{p?.timeStart}} - {{p?.timeEnd}}</p>
+                            <p style="color: blue">{{p?.content}}</p>
+                          </div>
+                          <ion-buttons>
+                              <button ion-button clear (click)="showEditDialog(day?.number -1, i)">
+                                <ion-icon name="create"></ion-icon>
+                              </button>
+                              <button ion-button clear>
+                                <ion-icon name="eye"></ion-icon>
+                              </button>
+                          </ion-buttons>
+                        </ion-card>
+                    </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+        </ion-col>
+        <ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
-<ion-content padding>
-
+    <ion-grid *ngIf="showAdd">
+      <ion-row>
+        <ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+        </ion-col>
+        <ion-col col-12 col-sm-12 col-md-12 col-lg-6>
+            <div style="padding: 10px">
+                <h1 *ngIf="!periodEditting" style="font weight: 10px; color: #7F8C8D; text-align: center;">
+                  Add period / event 
+                </h1>
+                <h1 *ngIf="periodEditting" style="font weight: 10px; color: #7F8C8D; text-align: center;">
+                  Make changes
+                </h1>
+              <ion-item>
+                <ion-label>Select type</ion-label>
+                <ion-select [(ngModel)]="eventType">
+                  <ion-option value="period" (ionSelect)="periodSelected()">
+                    Period
+                  </ion-option>
+                  <ion-option value="event" (ionSelect)="eventSelected()">
+                    Event
+                  </ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-item *ngIf="isPeriod">
+                <ion-label stacked>Subjects</ion-label>
+                <ion-input [(ngModel)]="subjectTxt" (keyup)="subjectAutocomplete($event)" ></ion-input>
+              </ion-item>
+              <ion-list>
+                <ion-item *ngFor="let pred of subjectPredictions" (click)="addSubject(pred)">
+                  {{pred}}
+                </ion-item>
+              </ion-list>
+              <ion-item *ngIf="teacherSelected">
+                Teacher
+                <p>{{user?.profile?.firstname}} {{user?.profile?.lastname}}</p>
+              </ion-item>
+              <ion-list *ngIf="subjectTeachers">
+                <h3> Select teacher from list</h3>
+                <ion-item *ngFor="let pred of subjectTeachers" (click)="selectTeacher(pred)">
+                  {{pred?.profile?.firstname}} {{pred?.profile?.lastname}}
+                </ion-item>
+              </ion-list>
+              <ion-item *ngIf="isEvent">
+                <ion-label stacked>Start time</ion-label>
+                <ion-input type="time" [(ngModel)]="period.timeStart"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="isEvent">
+                <ion-label stacked>End time</ion-label>
+                <ion-input type="time" [(ngModel)]="period.timeEnd"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="isEvent">
+                <ion-label stacked>Description</ion-label>
+                <ion-input [(ngModel)]="period.description"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="isPeriod">
+                <ion-label>Grade</ion-label>
+                <ion-select [(ngModel)="grade" >
+                  <ion-option *ngFor="let grd of grades">
+                    {{grd}}
+                  </ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-item *ngIf="isPeriod">
+                <ion-label>Select Class</ion-label>
+                <ion-select>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-label stacked>Venue</ion-label>
+                <ion-input [(ngModel)]="period.venue"></ion-input>
+              </ion-item>
+              <ion-buttons margin-vertical>
+                <button ion-button full (click)="chooseContent()">
+                  <ion-icon style="font-size: 25px" name="attach"></ion-icon> 
+                  &nbsp;&nbsp;Attach Content
+                </button>
+              </ion-buttons>
+              <input type="file" #content hidden="hidden" (change)="updateContent($event)">
+              <div margin *ngIf="eventContent">
+                <button ion-button clear full padding>{{eventContent}}</button>
+              </div>
+              <ion-buttons *ngIf="!periodEditting" end>
+                <button ion-button (click)="addPeriodToDay()">Add</button>
+                <button ion-button color="danger" (click)="cancel()">cancel</button>
+              </ion-buttons>
+              <ion-buttons *ngIf="periodEditting" end>
+                <button ion-button (click)="savePeriod()">Save changes</button>
+                <button ion-button color="danger" (click)="cancel()">cancel</button>
+              </ion-buttons>
+          </div>
+        </ion-col>
+        <ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+        </ion-col>
+      </ion-row>
+    </ion-grid>    
 </ion-content>

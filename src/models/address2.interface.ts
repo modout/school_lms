@@ -15,4 +15,5 @@ export interface Address2{
 	sublocality_short?: string;
 	vicinity?: string;
 	postal_code?: string;
+	place_id?: string;
 }

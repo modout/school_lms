@@ -1,12 +1,7 @@
 //import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 //import { UserRole } from '../../models/user.role.interface'
-/*
-  Generated class for the UserRolesProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class UserRolesProvider {
 
@@ -73,6 +68,8 @@ USER_ROLES: string[][] =
 	['School', 'Details', 'null', 'null', 'null', '58'],
 	['School', 'Server', 'null', 'null', 'null', '59'],
 	['School', 'SmartBoard', 'null', 'null', 'null', '60'],
+	['School', 'Laptop', 'null', 'null', 'null', '73'],
+	['School', 'Tablet', 'null', 'null', 'null', '74'],
 	['Training', 'Trainer', 'null', 'null', 'null', '61'],
 	['Training', 'Trainee', 'null', 'null', 'null', '62'],
 	['Learner', 'null', 'null', 'null', 'null', '63'],
@@ -84,7 +81,8 @@ USER_ROLES: string[][] =
 	['Value Added Services', 'Cleaning', 'null', 'null', 'null', '69'],
 	['Value Added Services', 'Software', 'null', 'null', 'null', '70'],
 	['Value Added Services', 'Equipment', 'null', 'null', 'null', '71'],
-	['Value Added Services', 'Finance', 'INAM', 'null', 'null', '72']
+	['Value Added Services', 'Finance', 'INAM', 'null', 'null', '72'],
+	
 ]
 
 SCHOOLS: string[] = 
@@ -127,7 +125,6 @@ GRADES: string[] =
 
 SUBJECTS: string[] =
 [
-  
 'CREATIVE ARTS',
 'AFRIKAANS',
 'EMS',
@@ -157,21 +154,18 @@ SUBJECTS: string[] =
 'HISTORY [J-HIS]',
 'SOCIAL SCIENCES',
 'AFRIKAANS FIRST ADD LANG',
-'Afrikaans/Zulu',
 'REGISTRATION',
 'LO Sport',
 'Afrikaans',
 'Life Orientation',
 'LO Sport',
 'LO',
-'MATHEMATICS',
-'MATHEMATICAL LITERACY',
 'English',
 'Zulu',
 'SchoolLMS Training',
 'Religious Studies'
-
 ]
+
 
   constructor(){}
 

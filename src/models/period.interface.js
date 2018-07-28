@@ -1,0 +1,1 @@
+//# sourceMappingURL=period.interface.js.map

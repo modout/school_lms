@@ -28,12 +28,11 @@
 					<button ion-button round><ion-icon name="add" style="font-size: 40px"></ion-icon></button>
 				</ion-buttons>
 				<ion-item>
-					<ion-label>Select User type</ion-label>
-					<ion-select>
-						<ion-option>Class</ion-option>
-						<ion-option>Learners</ion-option>
-						<ion-option>Teachers</ion-option>
-						<ion-option>Maintenance</ion-option>
+					<ion-label>User type</ion-label>
+					<ion-select [(ngModel)]="userType">
+						<ion-option value="learners" (ionSelect)="showLearners()" >Learners</ion-option>
+						<ion-option value="teachers" (ionSelect)="showTeachers()" >Teachers</ion-option>
+						<ion-option value="parents"  (ionSelect)="showParents()">Parents</ion-option>
 					</ion-select>
 				</ion-item>
 				<ion-item no-lines margin-vertical>
@@ -46,19 +45,19 @@
 					<ion-grid>
 						<ion-row>
 							<ion-col col-6>
-								<h2>Name</h2>
+								<em><b>Name</b></em>
 							</ion-col>
 							<ion-col col-6>
-								<h2>Role</h2>
+								<em><b>Role</b></em>
 							</ion-col>
 						</ion-row>
 						<hr>
-						<ion-row>
+						<ion-row *ngFor="let user of users">
 							<ion-col col-6>
-								Thapelo
+								{{user?.profile?.firstname}} {{user?.profile?.lastname}}
 							</ion-col>
 							<ion-col col-6>
-								Developer
+								{{user?.profile?.role[0]}}
 							</ion-col>
 						</ion-row>
 					</ion-grid>

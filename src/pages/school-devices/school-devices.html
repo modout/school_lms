@@ -40,25 +40,25 @@
 					<ion-grid>
 						<ion-row>
 							<ion-col col-4>
-								<h3>Model no</h3>
+								<em><b>Model no</b></em>
 							</ion-col>
 							<ion-col col-4>
-								<h3>Type</h3>
+								<em><b>Manufacturer</b></em>
 							</ion-col>
 							<ion-col col-4>
-								<h3>Position</h3>
+								<em><b>Type</b></em>
 							</ion-col>
 						</ion-row>
 						<hr>
-						<ion-row>
+						<ion-row *ngFor="let devc of devices">
 							<ion-col col-4>
-								WAPD-235N_3G
+								{{devc?.model}}
 							</ion-col>
 							<ion-col col-4>
-								Content Access Point
+								{{devc?.manufacturer}}
 							</ion-col>
 							<ion-col col-4>
-								Library
+								{{devc?.type}}
 							</ion-col>
 						</ion-row>
 					</ion-grid>

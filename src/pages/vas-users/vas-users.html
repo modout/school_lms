@@ -24,45 +24,33 @@
 			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>
 			</ion-col>
 			<ion-col col-12 col-sm-12 col-md-12 col-lg-6>
-				<h1 text-center>VAS Users</h1>
-				<!-- <ion-buttons padding end>
-					<button ion-button round><ion-icon name="add" style="font-size: 40px"></ion-icon></button>
-				</ion-buttons> -->
-				<ion-item>
-					<ion-label stacked>School</ion-label>
-					<ion-input type="search" placeholder="Search for school"></ion-input>
+				<ion-item color="secondary" text-center no-lines>
+					<h1 style="color: white" text-center>Select or Search Users</h1>
 				</ion-item>
-				<ion-item>
-					<ion-label>Select User type</ion-label>
-					<ion-select>
-						<ion-option>Class</ion-option>
-						<ion-option>Learners</ion-option>
-						<ion-option>Teachers</ion-option>
-						<ion-option>Maintenance</ion-option>
-					</ion-select>
-				</ion-item>
-				<ion-item>
-					<ion-label stacked>Search User</ion-label>
-					<ion-input type="search"  placeholder="Type user name here">
+				<ion-item padding  margin-bottom color="secondary" no-lines>
+					<ion-label style="color: white;">
+						<ion-icon name="search" item-start></ion-icon>
+					</ion-label>
+					<ion-input type="search" [(ngModel)]="searchTxt" class="search_input" placeholder="Search for a school" no-lines>
 					</ion-input>
 				</ion-item>
 				<ion-list>
 					<ion-grid>
 						<ion-row>
 							<ion-col col-6>
-								<h2>Name</h2>
+								<b>School Name</b>
 							</ion-col>
 							<ion-col col-6>
-								<h2>Role</h2>
+								<b>ID</b>
 							</ion-col>
 						</ion-row>
 						<hr>
-						<ion-row>
+						<ion-row *ngFor="let school of schools">
 							<ion-col col-6>
-								Thapelo
+								{{school?.name}}
 							</ion-col>
 							<ion-col col-6>
-								Developer
+								{{school?.id}}
 							</ion-col>
 						</ion-row>
 					</ion-grid>

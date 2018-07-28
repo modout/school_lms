@@ -4,6 +4,7 @@ import { VasProfilePage } from '../vas-profile/vas-profile';
 import { VasUsersPage } from '../vas-users/vas-users';
 import { TimetablePage } from '../timetable/timetable';
 import { VasDevicesPage } from '../vas-devices/vas-devices';
+import { ChatsPage } from '../chats/chats';
 
 /**
  * Generated class for the ValueAddedServicesPage page.
@@ -22,13 +23,15 @@ export class ValueAddedServicesPage {
   tab1Root: any;
   tab2Root: any;
   tab3Root: any;
+  tab4Root: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private platform: Platform){
 
   	this.platform.ready().then(data =>{
   	  this.tab0Root = VasProfilePage;
-	  this.tab1Root = VasUsersPage;
-	  this.tab2Root = VasDevicesPage;
-	  this.tab3Root = TimetablePage;
+  	  this.tab1Root = VasUsersPage;
+  	  this.tab2Root = VasDevicesPage;
+  	  this.tab3Root = TimetablePage;
+      this.tab4Root = ChatsPage;
   	})
   }
 
