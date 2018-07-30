@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-navbar color="tabbs">
+    <ion-title text-center>
+    	<span style="float: left">
+    		<img src="assets/imgs/school_lms.png" width="40px" height="40px">
+    	</span>
+    	<span padding>
+    		<h3 style="display: inline;">Add Sim &nbsp;&nbsp;&nbsp;<ion-icon name="desktop"></ion-icon></h3>
+    	</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+	<ion-grid>
+		<ion-row>
+			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+			</ion-col>
+			<ion-col col-12 col-sm-12 col-md-12 col-lg-6>
+				<h1 text-center>Add sim card to device.</h1>
+				<ion-item>
+					<h1>Device Type</h1>
+					<p> {{device?.type}} </p>
+				</ion-item>
+				<ion-item>
+					<h1>Model</h1>
+					<p> {{device?.model}} </p>
+				</ion-item>
+				<ion-item>
+					<h1>Manufacturer</h1>
+					<p> {{device?.manufacturer}} </p>
+				</ion-item>
+				<ion-item>
+					<h1>Device id</h1>
+					<p> {{device?.device_id}} </p>
+				</ion-item>
+				<ion-item>
+					<h1>Asssigned to</h1>
+					<p> {{device?.individual_assigned_to}} </p>
+				</ion-item>
+				<ion-item>
+					<h1>Supplier id</h1>
+					<p> {{device?.supplier_id}} </p>
+				</ion-item>
+				<ion-item>
+					<h1>Supplier Name</h1>
+					<p> {{device?.supplier_name}} </p>
+				</ion-item>
+				<ion-item>
+					<h1>Device Sim</h1>
+					<p> {{device?.sim ? 'installed' : 'No sim'}} </p>
+				</ion-item>
+				<ion-item>
+					<h1>Institution assigned to</h1>
+					<p> {{device?.institution_assigned_to ? device?.institution_assigned_to : 'Not assigned'}} </p>
+				</ion-item>
+				<ion-item>
+					<label stacked>Sim phone number</label>
+					<ion-input type="tel" placeholder="Enter phone number of sim" [(ngModel)]="phone" ></ion-input>
+				</ion-item>
+				<ion-buttons margin-vertical end>
+					<button ion-button (click)="addSimToDevice()" >Add sim</button>
+				</ion-buttons>
+			</ion-col>
+			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+	
+
+
+</ion-content>

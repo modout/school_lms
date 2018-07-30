@@ -7,4 +7,5 @@ export interface Sim{
 	supplier_id: string;
 	supplier_name: string;
 	device_id: string;
+	sim_id?: string;
 }

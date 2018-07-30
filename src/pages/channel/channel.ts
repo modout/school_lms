@@ -31,6 +31,7 @@ export class ChannelPage {
   	private local_db: LocalDbProvider, private filter_svc: FilteringProvider, private alertCtrl: AlertController){
   		this.message = this.object_init.initializeChannelMessage();//initializing the message object
   		if(this.navParams.data){
+        console.log('Channel: ', this.navParams.data)
   			this.channel = this.object_init.initializeChannel1(this.navParams.data); //initializing the channel
   		}
   		this.local_db.getSchool().then(school =>{
@@ -42,6 +43,7 @@ export class ChannelPage {
 
   ionViewDidLoad(){
     this.chat_svc.getChannelMessages(this.channel.id).subscribe(messages =>{
+      console.log('Channel messages: ', messages)
       this.channelMessages = messages;
       this.scrollToBottom();
     })

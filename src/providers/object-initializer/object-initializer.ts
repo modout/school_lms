@@ -43,7 +43,8 @@ export class ObjectInitializerProvider {
       phone_no: '',
       provider_name: '',
       plan: '',
-      device_id: '1111111'
+      device_id: '1111111',
+      sim_id: '1'
     }
     return sim;
   }
@@ -362,7 +363,8 @@ export class ObjectInitializerProvider {
   		type: '',
   		institution_assigned_to: '',
       individual_assigned_to: '',
-  		supplier_id: '' 
+  		supplier_id: '',
+      sim: this.initializeSim() 
   	}
   	return device;
   }

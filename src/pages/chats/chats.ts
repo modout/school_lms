@@ -31,6 +31,7 @@ export class ChatsPage {
   addChannel: boolean = false;
   channel: Channel;
   isNotLearner: boolean = false;
+  loading: boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private messaging_svc: ChatProvider,
   	private object_init: ObjectInitializerProvider, private local_db: LocalDbProvider, 
@@ -66,8 +67,7 @@ export class ChatsPage {
   	this.user.profile.channels.push(fbRef.key); // add a refference of channel to users channel list
     this.channel.id = fbRef.key;  //update the channel key field on the remote db
     this.messaging_svc.updateChannel(this.channel);
-  	this.updateUser(); //Update the user local and remote user dbs  
-   
+  	this.updateUser(); //Update the user local and remote user dbs
   }
 
   cancel(){
@@ -85,7 +85,12 @@ export class ChatsPage {
   getUserChannels(user){
   	this.userChannels = [];
       this.messaging_svc.getUserChannels(user.profile).subscribe(channels =>{
+        console.log('channels ', channels
+          )
         this.userChannels = channels;
+        setTimeout(() =>{
+          this.loading = false;
+        }, 5000)
     })
   	
   	this.messaging_svc.getSupportChannel(this.user.profile.uid).subscribe(support =>{
@@ -94,22 +99,43 @@ export class ChatsPage {
   }
 
   getUser(){
-  	this.local_db.getCurrentUser().then(user =>{
-      console.log(user);
-      this.remote_sync.getUser(user.profile.uid).subscribe(fbUser =>{
-        console.log(fbUser);
-        if(fbUser){
-          let currentUser = this.object_init.initializeUser1(fbUser.profile);
-          this.user = fbUser;
-          this.user.profile = currentUser;
-          this.getUserChannels(fbUser);
-        }else{
-          let currentUser = this.object_init.initializeUser1(user.profile)
-          this.user = user;
-          this.user.profile = currentUser;
-        }
-      }) 
+    this.local_db.getType().then(data =>{
+      if(data == 'user'){
+        this.local_db.getCurrentUser().then(user =>{
+          console.log('chats 98: ', user);
+          this.remote_sync.getUser(user.profile.uid).subscribe(fbUser =>{
+            console.log(fbUser);
+            if(fbUser){
+              let currentUser = this.object_init.initializeUser1(fbUser.profile);
+              this.user = fbUser;
+              this.user.profile = currentUser;
+              this.getUserChannels(fbUser);
+            }else{
+              let currentUser = this.object_init.initializeUser1(user.profile)
+              this.user = user;
+              this.user.profile = currentUser;
+            }
+          }) 
+        })
+      }else{
+        this.local_db.getSchool().then(school =>{
+          this.remote_sync.getSchool(school.id).subscribe(syncedSchool =>{
+              console.log(syncedSchool);
+            if(syncedSchool){
+              let currentUser = this.object_init.initializeUser1(syncedSchool.profile);
+              this.user = syncedSchool;
+              this.user.profile = currentUser;
+              this.getUserChannels(syncedSchool);
+            }else{
+              let currentUser = this.object_init.initializeUser1(school.profile)
+              this.user = school;
+              this.user.profile = currentUser;
+            }
+          })
+        })
+      }
     })
+  	
   }
 
   updateUser(){

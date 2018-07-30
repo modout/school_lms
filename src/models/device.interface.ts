@@ -1,3 +1,5 @@
+import { Sim } from './sim.interface';
+
 export interface Device{
 	model: string;
 	device_id?: string;
@@ -7,4 +9,5 @@ export interface Device{
 	individual_assigned_to?: string;
 	supplier_id?: string;
 	supplier_name?: string;
+	sim?: Sim;
 }

@@ -29,9 +29,10 @@ export class VasProfilePage {
     private places_svc: PlacesServiceProvider){
   	this.vas = this.object_init_svc.initializeVAS();
     this.local_db.getCurrentUser().then(data =>{
+      console.log('user: ', data);
       this.vas = data;
-      if(data.user.role[2])
-        this.vas.company_name = data.user.role[2];
+      if(data.profile.role[2])
+        this.vas.company_name = data.profile.role[2];
         console.log(data);
     })
   }

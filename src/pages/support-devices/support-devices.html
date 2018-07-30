@@ -1,11 +1,4 @@
-<!--
-  Generated template for the SupportDevicesPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
   <ion-navbar color="tabbs">
     <ion-title text-center>
     	<span style="float: left">
@@ -16,28 +9,27 @@
     	</span>
     </ion-title>
   </ion-navbar>
-
 </ion-header>
-
-
 <ion-content padding>
 	<ion-grid>
 		<ion-row>
-			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+			<ion-col col-0 col-sm-0 col-md-0 col-lg-2>
 			</ion-col>
-			<ion-col col-12 col-sm-12 col-md-12 col-lg-6>
+			<ion-col col-12 col-sm-12 col-md-12 col-lg-8>
 				<ion-buttons>
-					<button (click)="addDevice()" small ion-button>add device / sim</button>
+					<button (click)="addDevice()" color="secondary" small ion-button>add device / sim</button>
 					<button *ngIf="deviceBeingAdded || deviceBeingEdited" ion-button color="danger" (click)="cancel()"> Cancel</button>
 				</ion-buttons>
-				<ion-item padding margin-vertical>
-					<ion-label>list of</ion-label>
-					<ion-select>
-						<ion-option (ionSelect)="showDevices()">Devices</ion-option>
-						<ion-option (ionSelect)="showSimCards()">Sims</ion-option>
-					</ion-select>
-				</ion-item>
-				<div *ngIf="!deviceBeingAdded && !deviceBeingEdited && showSims">
+				<ion-row>
+					<ion-item *ngIf="!deviceBeingAdded && !deviceBeingEdited" padding margin-vertical col-12 col-sm-12 col-md-6 col-lg-6>
+						<ion-label>Select device type</ion-label>
+						<ion-select>
+							<ion-option (ionSelect)="showDevices()">Devices</ion-option>
+							<ion-option (ionSelect)="showSimCards()">Sims</ion-option>
+						</ion-select>
+					</ion-item>
+				</ion-row>
+				<div *ngIf="!deviceBeingAdded && !deviceBeingEdited && showSims" style="margin-top: 20px">
 					<h1 text-center>Sims on system</h1>
 					<ion-list>
 						<ion-grid>
@@ -51,8 +43,12 @@
 								<ion-col>
 									<b>Provider</b>
 								</ion-col>
+								<ion-col>
+									<b>Device id</b>
+								</ion-col>
 							</ion-row>
-							<ion-row padding-vertical style="border-bottom: 1px solid lightgray" *ngFor="let devc of sims | async">
+							<ion-row padding-vertical style="border-bottom: 1px solid lightgray" 
+							*ngFor="let devc of sims | async" (click)="gotoSim(devc)">
 								<ion-col text-wrap>
 									{{devc?.phone_no}}
 								</ion-col>
@@ -62,11 +58,14 @@
 								<ion-col text-wrap>
 									{{devc?.provider_name}}
 								</ion-col>
+								<ion-col text-wrap>
+									{{devc?.device_id}}
+								</ion-col>
 							</ion-row>
 						</ion-grid>
 					</ion-list>
 				</div>
-				<div *ngIf="!deviceBeingAdded && !deviceBeingEdited && !showSims">
+				<div *ngIf="!deviceBeingAdded && !deviceBeingEdited && !showSims" style="margin-top: 20px">
 					<h1 text-center>Devices on system</h1>
 					<ion-list>
 						<ion-grid>
@@ -80,6 +79,9 @@
 								<ion-col>
 									<b>Type</b>
 								</ion-col>
+								<ion-col>
+									<b>Sim card</b>
+								</ion-col>
 							</ion-row>
 							<ion-row padding-vertical style="border-bottom: 1px solid lightgray" *ngFor="let devc of devices | async">
 								<ion-col>
@@ -91,11 +93,19 @@
 								<ion-col>
 									{{devc?.type}}
 								</ion-col>
+								<ion-col>
+									<p *ngIf="devc?.sim">
+										{{devc?.sim?.phone_no}}
+									</p>
+									<button *ngIf="!devc?.sim" ion-button small (click)='gotoAddSim(devc)' >
+										add sim
+									</button>
+								</ion-col>
 							</ion-row>
 						</ion-grid>
 					</ion-list>
 				</div>
-				<div *ngIf="deviceBeingAdded">
+				<div *ngIf="deviceBeingAdded" style="margin-top: 20px">
 					<h2 text-center>Register a device</h2>
 				  <fieldset>
 				    <legend>School &amp; Supplier details</legend>
@@ -184,7 +194,7 @@
 				  </ion-buttons>
 				</div>
 			</ion-col>
-			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>
+			<ion-col col-0 col-sm-0 col-md-0 col-lg-2>
 			</ion-col>
 		</ion-row>
 	</ion-grid>

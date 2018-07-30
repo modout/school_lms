@@ -39,7 +39,7 @@ import { ProfilePageModule } from '../pages/profile/profile.module';
 import { ChannelPageModule } from '../pages/channel/channel.module';
 import { DashboardPageModule } from '../pages/dashboard/dashboard.module';
 import { SupportChannelPageModule } from '../pages/support-channel/support-channel.module';
-import {EconomyPageModule } from '../pages/economy/economy.module';
+import { EconomyPageModule } from '../pages/economy/economy.module';
 import { TimetableSettingsPageModule } from '../pages/timetable-settings/timetable-settings.module';
 import { GeneralSettingsPageModule } from '../pages/general-settings/general-settings.module';
 import { TimetableProvider } from '../providers/timetable/timetable';
@@ -50,6 +50,8 @@ import { SupportMessagingPageModule } from '../pages/support-messaging/support-m
 import { SupportSchoolsPageModule } from '../pages/support-schools/support-schools.module';
 import { SupportTimetablePageModule } from '../pages/support-timetable/support-timetable.module';
 import { SupportDashPageModule } from '../pages/support-dash/support-dash.module';
+import { SimInfoPageModule } from '../pages/sim-info/sim-info.module';
+import { AddDeviceSimPageModule } from '../pages/add-device-sim/add-device-sim.module';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyBSbZUd1sfYbTNgvctBrNdt-sPxlQy1RdM",
@@ -80,7 +82,7 @@ export const firebaseConfig = {
     RegisterPageModule, ChatsPageModule, ProfilePageModule, ChannelPageModule, DashboardPageModule,
     SupportChannelPageModule, EconomyPageModule, GeneralSettingsPageModule, TimetableSettingsPageModule,
     SupportHomePageModule, SupportDashPageModule, SupportTimetablePageModule, SupportSchoolsPageModule, SupportContentPageModule,
-    SupportMessagingPageModule, SupportDevicesPageModule
+    SupportMessagingPageModule, SupportDevicesPageModule, SimInfoPageModule, AddDeviceSimPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

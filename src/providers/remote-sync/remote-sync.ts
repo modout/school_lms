@@ -56,6 +56,10 @@ export class RemoteSyncProvider{
     return this.db.list('Users').push(vas);
   }
 
+  setSimDevice(sim: Sim, device_id: string){
+    return this.db.object(`Sims/${sim.sim_id}`).set(sim)
+  }
+
   //-----------------------------------------------------------------------------------------------------------------
 
   //getters
@@ -66,6 +70,11 @@ export class RemoteSyncProvider{
 
   getAllSims(): Observable<Sim[]>{
     return this.db.list<Sim>('Sims').valueChanges();
+  }
+
+  getSimByNumber(number: string): Observable<Sim[]>{
+    return this.db.list<Sim>(`Sims`, ref => ref.orderByChild('phone_no').equalTo(number))
+    .valueChanges()
   }
 
   getAllDevices(): Observable<Device[]>{
@@ -198,6 +207,10 @@ export class RemoteSyncProvider{
 
   updateVAS(vas_id: string, vas: VAS){
     return this.db.object(`Users/${vas_id}`).set(vas);
+  }
+
+  updateSim(sim: Sim){
+    return this.db.object(`Sims/${sim.sim_id}`).set(sim);
   }
 
   
