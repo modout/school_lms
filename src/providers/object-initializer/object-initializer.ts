@@ -205,7 +205,8 @@ export class ObjectInitializerProvider {
       work_number: '',
       dp: 'assets/imgs/placeholder.png',
       uid: '',
-      proof_of_address: '',
+      proof_of_address: null,
+      affidavit: null,
       residential_address: this.initializeResidentialAddress(),
       role: [],
       channels: ['-LHqBOqBzOsg2bL_PP9S']

@@ -23,7 +23,8 @@ import { Child } from '../../models/child.interface';
 import { DeviceRegisterPage } from '../device-register/device-register';
 import { RemoteSyncProvider } from '../../providers/remote-sync/remote-sync';
 import { SupportHomePage } from '../support-home/support-home';
-
+import { UploadServiceProvider } from '../../providers/upload-service/upload-service';
+import { FileUpload } from '../../models/fileupload.interface';
 
 declare var google: any;
 
@@ -85,12 +86,19 @@ export class RegisterPage {
   isIT: boolean = false;
   isSupport: boolean = false;
   support: Support;
+  allAgreed: boolean = false;
+  idLengthMessage: string = '';
+  idNotMatch: string = '';
+  idMatch: string = '';
+  emailNotGood: boolean = false;
+  detailFormCorrect: boolean = false;
+  proofAttached: boolean = false;
 
   service = new google.maps.places.AutocompleteService();
   constructor(public navCtrl: NavController, public navParams: NavParams, private user_role_svc: UserRolesProvider, 
     private local_db: LocalDbProvider, private filtering_svc: FilteringProvider, private schools_popup: ModalController,
     private place_svc: PlacesServiceProvider, private object_init_svc: ObjectInitializerProvider,
-    private remote_sync: RemoteSyncProvider, private alertCtrl: AlertController){
+    private remote_sync: RemoteSyncProvider, private alertCtrl: AlertController, private upload_svc: UploadServiceProvider){
   	this.user = this.object_init_svc.initializeUser();
     this.school = this.object_init_svc.initializeSchool();
     this.vas = this.object_init_svc.initializeVAS();
@@ -133,11 +141,59 @@ export class RegisterPage {
     alert.present();
   }
 
+  isEmail(event)
+    {
+        var  serchfind:boolean;
+
+        let regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+
+        serchfind = regexp.test(event.target.value);
+
+        if(event.target.value == ''){
+          this.emailNotGood = false;
+          this.detailFormCorrect = true;
+        }
+        else if(!serchfind){
+          this.emailNotGood = true;
+          this.detailFormCorrect = false;
+        }else{
+          this.emailNotGood = false;
+          this.detailFormCorrect = true;
+        }
+    }
+
+  checkIdLength(event){
+      if(event.target.value.length < 13){
+          this.idLengthMessage = 'ID number must be 13 digits long';
+          this.detailFormCorrect = false;
+      }else if(event.target.value.length > 13){
+        this.idLengthMessage = 'ID number too long';
+        this.detailFormCorrect = false;
+      }else{
+        this.idLengthMessage = '';
+        this.detailFormCorrect = true;
+      }
+  }
+
+  checkIdMatch(event){
+      if(event.target.value.toLowerCase() != this.user.id_or_passport.toLowerCase()){
+        this.idNotMatch = 'ID or passport number does not match';
+        this.idMatch = '';
+        this.detailFormCorrect = false;
+      }else{
+        this.idMatch = 'ID or passport number matches';
+        this.idNotMatch = '';
+        this.detailFormCorrect = true;
+      }
+  }
+
   //Check if all contract points have been agreed to, show a popup and stop navigation if not all points are agreed to
   checkIfAgreed(){
+    this.allAgreed = true;
     for(var i: number = 0; i < this.contractPoints.length; ++i){
       if(!this.contractPoints[i]){
-        this.showAlert('Contract not complete', 'You have to agree to all contract points before you proceed');
+        //this.showAlert('Contract not complete', 'You have to agree to all contract points before you proceed');
+        this.allAgreed = false;
         break;
       }
     }
@@ -152,7 +208,10 @@ export class RegisterPage {
 
   //load proof of residence file from device to app memory
   updateproof(event){
-    this.proof_attach = event.target.value;
+    console.log('The file ', event.target.files);
+    this.proof_attach = event.target.files[0];
+    this.user.proof_of_address = event.target.files[0];
+    if(this.proof_attach != null || this.proof_attach != undefined) this.proofAttached = true;
   }
 
   //go to the school interface, given a school object
@@ -215,7 +274,9 @@ export class RegisterPage {
 
   //load affidavit of residence file from device to app memory
   updateaffidavitf(event){
-    this.affidavit_attach = event.target.value;
+    this.user.affidavit = event.target.files[0];
+    this.affidavit_attach = event.target.files[0];
+    if(this.proof_attach != null || this.proof_attach != undefined) this.proofAttached = true;
   }
 
   //Get unique strings (of roles/categories) in a certain column and update the roles array
@@ -594,5 +655,32 @@ export class RegisterPage {
   gradesAutocomplete(){
     this.gradesArry = this.filtering_svc.autocomplete(this.user_role_svc.GRADES, this.grade)
   }
+
+  uploadFiles(){
+      let proof: FileUpload = {
+        file: this.user.proof_of_address,
+        name: this.user.proof_of_address.file.name,
+        url: '',
+        path: 'Proofs',
+        progress: 0
+      }
+
+      let affidavit: FileUpload = {
+        file: this.user.affidavit,
+        name: this.user.affidavit.file.name,
+        url: '',
+        path: 'Affidavits',
+        progress: 0
+      }
+      this.upload_svc.uploadProof(proof).then(prf =>{
+        this.upload_svc.uploadProof(affidavit).then(afdvt =>{
+          return {affidavit: afdvt, proof: prf}
+        })
+        .catch(err => console.log(err))
+      })
+      .catch(err => console.log(err))
+  }
+
+
 
 }

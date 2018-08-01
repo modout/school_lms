@@ -7,17 +7,15 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content >
+<ion-content style="background: #F7F9F9">
 	<ion-stepper #stepper mode="horizontal">
 		<ion-step>
-			<h2 text-center>User Contract</h2>
-			<p text-center>In order to proceed you must confirm the contract terms.</p>
-			<h3 text-center>I will provide to the best of my ability the most correct information about the following</h3>
+			
 			<ion-grid no-padding>
 				<ion-row>
 					<ion-col col-sm-0 col-0 col-md-3>
 					</ion-col>
-					<ion-col col-sm-12 col-12 col-md-6>
+				<!-- 	<ion-col col-sm-12 col-12 col-md-6>
 						<ion-item>
 							<ion-label>Select School</ion-label>
 							<ion-select>
@@ -58,70 +56,82 @@
 								</ion-option>
 							</ion-select>
 						</ion-item>
-					</ion-col>
-					<!-- <ion-col col-sm-12 col-12 col-md-6>
-						<ion-item text-wrap>
+					</ion-col> -->
+					<ion-col col-sm-12 col-12 col-md-6>
+						<h1 text-center>User Contract <ion-icon name="document"></ion-icon> </h1>
+						<ion-item text-center text-wrap 
+							padding-vertical margin-vertical style="background: #9999FF; border-radius: 7px" no-lines>
+
+							<p style="color: white" >
+								Welcome to SchoolLMS, in order to register you need to confirm that you will provide 
+								the correct information as per the contract terms below.
+							</p>
+							<p style="color: white">Please tick all the contract terms in order to proceed.</p>
+						</ion-item>
+						<ion-item text-wrap >
 						   <ion-label >My First Name</ion-label>
-						   <ion-checkbox [(ngModel)]="contractPoints[0]" ></ion-checkbox>
+						   <ion-checkbox [(ngModel)]="contractPoints[0]" (ionChange)="checkIfAgreed()"></ion-checkbox>
 						</ion-item>
 						<ion-item text-wrap>
 						   <ion-label >My Last Name</ion-label>
-						   <ion-checkbox [(ngModel)]="contractPoints[1]"></ion-checkbox>
+						   <ion-checkbox [(ngModel)]="contractPoints[1]" (ionChange)="checkIfAgreed()"></ion-checkbox>
 						</ion-item>
 						<ion-item text-wrap>
 						   <ion-label >My email address</ion-label>
-						   <ion-checkbox [(ngModel)]="contractPoints[2]"></ion-checkbox>
+						   <ion-checkbox [(ngModel)]="contractPoints[2]" (ionChange)="checkIfAgreed()"></ion-checkbox>
 						</ion-item>
 						<ion-item text-wrap>
 						   <ion-label >My title</ion-label>
-						   <ion-checkbox [(ngModel)]="contractPoints[3]"></ion-checkbox>
+						   <ion-checkbox [(ngModel)]="contractPoints[3]" (ionChange)="checkIfAgreed()"></ion-checkbox>
 						</ion-item>
 						<ion-item text-wrap >
 						   <ion-label>My Gender</ion-label>
-						   <ion-checkbox [(ngModel)]="contractPoints[4]"></ion-checkbox>
+						   <ion-checkbox [(ngModel)]="contractPoints[4]" (ionChange)="checkIfAgreed()"></ion-checkbox>
 						</ion-item>
 						<ion-item text-wrap >
 						   <ion-label >My passport or ID number</ion-label>
-						   <ion-checkbox [(ngModel)]="contractPoints[5]"></ion-checkbox>
+						   <ion-checkbox [(ngModel)]="contractPoints[5]" (ionChange)="checkIfAgreed()"></ion-checkbox>
 						</ion-item>
 						<ion-item text-wrap >
 						   <ion-label >My residential address</ion-label>
-						   <ion-checkbox [(ngModel)]="contractPoints[6]"></ion-checkbox>
+						   <ion-checkbox [(ngModel)]="contractPoints[6]" (ionChange)="checkIfAgreed()"></ion-checkbox>
 						</ion-item>
 						<ion-item text-wrap >
 						   <ion-label >My cellphone number</ion-label>
-						   <ion-checkbox [(ngModel)]="contractPoints[7]"></ion-checkbox>
+						   <ion-checkbox [(ngModel)]="contractPoints[7]" (ionChange)="checkIfAgreed()"></ion-checkbox>
 						</ion-item>
 						<ion-item text-wrap >
 						   <ion-label >My home number</ion-label>
-						   <ion-checkbox [(ngModel)]="contractPoints[8]"></ion-checkbox>
+						   <ion-checkbox [(ngModel)]="contractPoints[8]" (ionChange)="checkIfAgreed()"></ion-checkbox>
 						</ion-item>
 						<ion-item text-wrap >
 						   <ion-label >My work number</ion-label>
-						   <ion-checkbox [(ngModel)]="contractPoints[9]"></ion-checkbox>
+						   <ion-checkbox [(ngModel)]="contractPoints[9]" (ionChange)="checkIfAgreed()"></ion-checkbox>
 						</ion-item>
 						<ion-item text-wrap no-lines>
 						   <ion-label>My role in the education system</ion-label>
-						   <ion-checkbox [(ngModel)]="contractPoints[10]"></ion-checkbox>
+						   <ion-checkbox [(ngModel)]="contractPoints[10]" (ionChange)="checkIfAgreed()"></ion-checkbox>
 						</ion-item>
-					</ion-col> -->
+					</ion-col>
 					<ion-col col-sm-0 col-md-3 col-0>
 					</ion-col>
 				</ion-row>
 			</ion-grid>
 			<ion-buttons text-center margin-vertical>
-	          <button ion-button small round outline ionicStepperNext (click)="checkIfAgreed()">Next&nbsp;&nbsp;
+	          <button ion-button small round outline ionicStepperNext (click)="checkIfAgreed()" *ngIf="allAgreed">Next&nbsp;&nbsp;
 	          <ion-icon name="skip-forward"></ion-icon>
 	          </button>
 	        </ion-buttons>
 		</ion-step>
 		<ion-step>
-			<h2 text-center>User Profile</h2>
-			<ion-grid>
+			<ion-grid no-padding style="margin: 0">
 				<ion-row>
 					<ion-col col-sm-0 col-0 col-md-3>
 					</ion-col>
 					<ion-col col-sm-12 col-12 col-md-6>
+						<ion-item padding style="background: #9999FF; color: white" no-lines>
+							<h1 text-center>User Profile</h1>
+						</ion-item>
 						<ion-item >
 						  <ion-label>Title</ion-label>
 						  <ion-select [(ngModel)]="user.title" required>
@@ -142,11 +152,25 @@
 						</ion-item>
 						<ion-item>
 						  <ion-label floating>Identity/Passport number</ion-label>
-						  <ion-input type="password" [(ngModel)]="user.id_or_password" required></ion-input>
+						  <ion-input type="password" [(ngModel)]="user.id_or_passport" required>
+						  </ion-input>
 						</ion-item>
+						<!-- <ion-item no-lines *ngIf="idLengthMessage">
+							<p text-center style="color: #f53d3d" padding>
+								{{idLengthMessage}}
+							</p>
+						</ion-item> -->
 						<ion-item>
 						  <ion-label floating>Confirm Identity/Passport number</ion-label>
-						  <ion-input type="password" required></ion-input>
+						  <ion-input type="password" required (keyup)="checkIdMatch($event)"></ion-input>
+						</ion-item>
+						<ion-item no-lines *ngIf="idNotMatch || idMatch">
+							<p style="color: #f53d3d">
+							{{ idNotMatch }}
+							</p>
+							<p style="color: #32db64">
+							{{ idMatch }}
+							</p>
 						</ion-item>
 						<ion-item>
 						  <ion-label>Gender</ion-label>
@@ -170,13 +194,16 @@
 						</ion-item>
 						<ion-item>
 						  <ion-label floating>Email Address</ion-label>
-						  <ion-input type="email" [(ngModel)]="user.email"  required></ion-input>
+						  <ion-input type="email" [(ngModel)]="user.email" (keyup)="isEmail($event)" required></ion-input>
+						</ion-item>
+						<ion-item no-lines *ngIf="emailNotGood">
+							<p style="color: #f53d3d">Email badly formatted...</p>
 						</ion-item>
 						<ion-buttons text-center margin-vertical>
 				          <button ion-button round outline small ionicStepperPrevious>
 				            <ion-icon name="skip-backward"></ion-icon> &nbsp;&nbsp;Back
 				          </button>
-				          <button ion-button small round outline ionicStepperNext>Next&nbsp;&nbsp;
+				          <button ion-button small round outline ionicStepperNext  *ngIf="detailFormCorrect">Next&nbsp;&nbsp;
 				          <ion-icon name="skip-forward"></ion-icon>
 				          </button>
 				        </ion-buttons>
@@ -187,36 +214,36 @@
 			</ion-grid>
 		</ion-step>
 		<ion-step>
-			<h2 text-center>Rica Details</h2>
 			<ion-grid>
 				<ion-row>
 					<ion-col col-sm-0 col-0 col-md-3>
 					</ion-col>
 					<ion-col col-sm-12 col-12 col-md-6>
+						<ion-item style="background: #9999FF; color: white" padding no-lines>
+							<h1 text-center>Rica Details</h1>
+						</ion-item>
 						<ion-item>
-						  <ion-label floating>Street Address:</ion-label>
+						  <ion-label floating>Street Address</ion-label>
 						  <ion-input type="text" [(ngModel)]="user.residential_address.street_address" 
 						  (keyup)="getPredictions($event)" required></ion-input>
 						</ion-item>
-						<ion-list>
-							<ion-item *ngFor="let pred of addPredictions" (click)="selectAddress(pred)">
-								{{pred.description}}
-							</ion-item>
-						</ion-list>
+						<ion-item  *ngFor="let pred of addPredictions" (click)="selectAddress(pred)">
+							{{pred.description}}
+						</ion-item>
 						<ion-item>
-						  <ion-label floating>City:</ion-label>
+						  <ion-label floating>City</ion-label>
 						  <ion-input type="text" [(ngModel)]="user.residential_address.city" required></ion-input>
 						</ion-item>
 						<ion-item>
-						  <ion-label floating>Province:</ion-label>
+						  <ion-label floating>Province</ion-label>
 						  <ion-input type="text" [(ngModel)]="user.residential_address.province" required></ion-input>
 						</ion-item>
 						<ion-item>
-						  <ion-label floating>Postal Code:</ion-label>
+						  <ion-label floating>Postal Code</ion-label>
 						  <ion-input type="text" [(ngModel)]="user.residential_address.postal_code" required></ion-input>
 						</ion-item>
 						<ion-item>
-						  <ion-label floating>Country:</ion-label>
+						  <ion-label floating>Country</ion-label>
 						  <ion-input type="text" [(ngModel)]="user.residential_address.country" required></ion-input>
 						</ion-item>
 						<ion-item  no-lines text-wrap margin-vertical>
@@ -232,18 +259,18 @@
 									<ion-icon style="font-size: 25px" name="attach"></ion-icon> &nbsp;&nbsp;Affidavit
 								</button>
 							</ion-buttons>
-							<input type="file" #proof hidden="hidden" (change)="updateproof($event)">
-							<input type="file" #affidavit hidden="hidden" (change)="updateaffidavitf($event)">
+							<input type="file" accept="application/pdf" #proof hidden="hidden" (change)="updateproof($event)">
+							<input type="file" accept="application/pdf" #affidavit hidden="hidden" (change)="updateaffidavitf($event)">
 							<div margin *ngIf="proof_attach || affidavit_attach">
-								<button ion-button clear full padding>{{proof_attach}}</button>
-								<button ion-button clear full padding>{{affidavit_attach}}</button>
+								<button ion-button clear full padding>{{proof_attach?.name}}</button>
+								<button ion-button clear full padding>{{affidavit_attach?.name}}</button>
 							</div>
 						</ion-item>
 						<ion-buttons text-center margin-vertical>
 				          <button ion-button round outline small ionicStepperPrevious>
 				            <ion-icon name="skip-backward"></ion-icon> &nbsp;&nbsp;Back
 				          </button>
-				          <button ion-button small round outline ionicStepperNext>Next&nbsp;&nbsp;
+				          <button ion-button small round outline ionicStepperNext *ngIf="proofAttached">Next&nbsp;&nbsp;
 				          <ion-icon name="skip-forward"></ion-icon>
 				          </button>
 				        </ion-buttons>

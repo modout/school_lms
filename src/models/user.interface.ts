@@ -1,4 +1,5 @@
-import { Address } from './address.interface'
+import { Address } from './address.interface';
+import { FileUpload } from './fileupload.interface';
 
 export interface User{
 	uid?: string;
@@ -14,7 +15,7 @@ export interface User{
 	email?: string;
 	dp?: any;
 	residential_address?: Address;
-	proof_of_address?: any;
-	affidavit?: any;
+	proof_of_address?: FileUpload;
+	affidavit?: FileUpload;
 	channels?: string[];
 }

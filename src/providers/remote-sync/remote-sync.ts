@@ -45,6 +45,7 @@ export class RemoteSyncProvider{
   }
 
   setSchool(school: School){
+    this.db.object(`Schools/${school.id}/id`).query.equalTo(school.id)
     return this.db.list('Schools').push(school);
   }
 

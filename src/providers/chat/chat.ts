@@ -34,12 +34,16 @@ export class ChatProvider {
       })
     }
 
-  	getSupportChannel(uid: string): Observable<ChannelMessage[]>{
-  		return this.db.list<ChannelMessage>(`Support_Channels/${uid}`).valueChanges();
+  	getSupportChannel(uid: string): Observable<Channel>{
+  		return this.db.object<Channel>(`Support_Channels/${uid}`).valueChanges();
   	}
 
-    getAllSupportChannels(): Observable<ChannelMessage[]>{
-      return this.db.list<ChannelMessage>('Support_Channels').valueChanges()
+    getSupportMesssages(uid: string): Observable<ChannelMessage[]>{
+      return this.db.list<ChannelMessage>(`Support_Channels/${uid}/messages`).valueChanges();
+    }
+
+    getAllSupportChannels(): Observable<Channel[]>{
+      return this.db.list<Channel>('Support_Channels').valueChanges()
     }
 
   	getOneToOne(uid: string){
@@ -56,8 +60,8 @@ export class ChatProvider {
   		return this.db.list(`Channels/${message.channel_id}/messages`).push(message);
   	}
 
-  	createSupportChannel(message: ChannelMessage){
-  		return this.db.list(`Support_Channels/${message.by.uid}`).push(message)
+  	createSupportChannel(channel: Channel){
+  		return this.db.object(`Support_Channels/${channel.id}`).set(channel);
   	}
 
   	createChatChannel(channel: Channel){
@@ -70,7 +74,7 @@ export class ChatProvider {
   	}
 
     sendSupportMessage(message: ChannelMessage){
-      return this.db.list(`Support_Channels/${message.by.uid}`).push(message);
+      return this.db.list(`Support_Channels/${message.by.uid}/messages`).push(message);
     }
 
     respondToSupportMessage(message: ChannelMessage){

@@ -16,9 +16,10 @@
 			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>
 			</ion-col>
 			<ion-col col-12 col-sm-12 col-md-12 col-lg-6>
-				<h1 text-center style="font weight: 10px; color: #7F8C8D;"> Issues </h1>
-				<ion-item *ngFor="let msg of messages | async">
-					<p>{{(msg[0]?.by?.firstname.length > 0 ) || (msg[0]?.by?.firstname.length != undefined ) ?  msg[0]?.by?.firstname : 'anonymous'}} ~ {{(msg[0]?.by?.role[0].length > 0)  ?  msg[0]?.by?.role[0] : 'no role provided'}} </p>
+				<h1 text-center style="font-weight: 10px; color: #7F8C8D;"> Issues </h1>
+
+				<ion-item *ngFor="let channel of channels | async" (click)="gotoSupport(channel?.id)" padding>
+					<p>{{(channel?.creator?.firstname.length > 0 ) || (channel?.creator?.firstname.length != undefined ) ?  channel?.creator?.firstname : 'anonymous'}} ~ {{(channel?.creator?.role[0].length > 0)  ?  channel?.creator?.role[0] : 'no role provided'}} </p>
 				</ion-item>
 			</ion-col>
 			<ion-col col-0 col-sm-0 col-md-0 col-lg-3>

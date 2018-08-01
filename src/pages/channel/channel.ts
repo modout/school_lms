@@ -7,6 +7,8 @@ import { ObjectInitializerProvider } from '../../providers/object-initializer/ob
 import { RemoteSyncProvider } from '../../providers/remote-sync/remote-sync';
 import { LocalDbProvider } from '../../providers/local-db/local-db';
 import { FilteringProvider } from '../../providers/filtering/filtering';
+import { User } from '../../models/user.interface';
+
 
 @IonicPage()
 @Component({
@@ -25,15 +27,25 @@ export class ChannelPage {
   channelMessages: ChannelMessage[] = [];
   text: string = '';
   loading: boolean = false;
+  user: User;
+  isAdmin: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private chat_svc: ChatProvider,
   	private object_init: ObjectInitializerProvider, private remote_sync: RemoteSyncProvider, 
   	private local_db: LocalDbProvider, private filter_svc: FilteringProvider, private alertCtrl: AlertController){
   		this.message = this.object_init.initializeChannelMessage();//initializing the message object
+      this.user = this.object_init.initializeUser();
   		if(this.navParams.data){
         console.log('Channel: ', this.navParams.data)
   			this.channel = this.object_init.initializeChannel1(this.navParams.data); //initializing the channel
   		}
+      this.local_db.getCurrentUser().then(user =>{
+        console.log(user);
+        this.user = user.profile;
+        if(user.profile.uid == this.channel.creator.uid){
+          this.isAdmin = true;
+        }
+      })
   		this.local_db.getSchool().then(school =>{
   			this.remote_sync.getSchoolUsers(school.id).subscribe(users =>{
   				this.schoolUsers = users;
@@ -89,7 +101,7 @@ export class ChannelPage {
   send(){
     this.message.text = this.text;
   	this.message.timeStamp = Date.now();
-  	this.message.by = this.channel.creator;
+  	this.message.by = this.user;
   	this.message.channel_id = this.channel.id;
   	this.chat_svc.createMessageInChannel(this.message);
   	this.text = '';

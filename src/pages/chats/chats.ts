@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { ChatProvider } from '../../providers/chat/chat';
 import { Channel } from '../../models/channel.interface';
 import { User } from '../../models/user.interface';
@@ -32,10 +32,11 @@ export class ChatsPage {
   channel: Channel;
   isNotLearner: boolean = false;
   loading: boolean = true;
+  shownEmptyOnce: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private messaging_svc: ChatProvider,
   	private object_init: ObjectInitializerProvider, private local_db: LocalDbProvider, 
-  	private remote_sync: RemoteSyncProvider){
+  	private remote_sync: RemoteSyncProvider, private toastCtrl: ToastController ){
   		
   		this.channel ={
   			id : '',
@@ -75,6 +76,7 @@ export class ChatsPage {
   }
 
   gotoChannel(channel: Channel){
+    console.log('We are going to this channel: ', channel);
     this.navCtrl.push(ChannelPage, channel);
   }
 
@@ -83,16 +85,29 @@ export class ChatsPage {
   }
 
   getUserChannels(user){
+    console.log('get user channel...')
   	this.userChannels = [];
       this.messaging_svc.getUserChannels(user.profile).subscribe(channels =>{
-        console.log('channels ', channels
-          )
-        this.userChannels = channels;
-        setTimeout(() =>{
+        console.log('searching channels...')
+        if(channels && channels.length > 0){
+          console.log('found channels...', channels)
+          this.userChannels = channels;
+          setTimeout(() =>{
+            this.loading = false;
+          }, 5000)
+        }
+        else if(!this.shownEmptyOnce){
+          console.log('no channels')
           this.loading = false;
-        }, 5000)
+          this.shownEmptyOnce = true;
+           this.toastCtrl.create({
+             message: `You are not part of any group yet. You can create your own groups and add people, or you can ask 
+             to be invited in the existing groups`,
+             duration: 5000
+          })
+          .present();
+        }
     })
-  	
   	this.messaging_svc.getSupportChannel(this.user.profile.uid).subscribe(support =>{
   		this.userSupport = support;
   	})
@@ -100,14 +115,17 @@ export class ChatsPage {
 
   getUser(){
     this.local_db.getType().then(data =>{
+      console.log('chats 113... ', data);
       if(data == 'user'){
         this.local_db.getCurrentUser().then(user =>{
           console.log('chats 98: ', user);
           this.remote_sync.getUser(user.profile.uid).subscribe(fbUser =>{
-            console.log(fbUser);
+            console.log('chats 117 fbUser... ', fbUser);
             if(fbUser){
               let currentUser = this.object_init.initializeUser1(fbUser.profile);
+              console.log('chats 120, currentUser ', currentUser)
               this.user = fbUser;
+              console.log('chats 122, this.user ', this.user)
               this.user.profile = currentUser;
               this.getUserChannels(fbUser);
             }else{
@@ -118,9 +136,29 @@ export class ChatsPage {
           }) 
         })
       }else{
-        this.local_db.getSchool().then(school =>{
+        if(this.local_db.getCurrentUser()){
+          this.local_db.getCurrentUser().then(user =>{
+          console.log('chats 98: ', user);
+          this.remote_sync.getUser(user.profile.uid).subscribe(fbUser =>{
+            console.log('chats 117 fbUser... ', fbUser);
+            if(fbUser){
+              let currentUser = this.object_init.initializeUser1(fbUser.profile);
+              console.log('chats 120, currentUser ', currentUser)
+              this.user = fbUser;
+              console.log('chats 122, this.user ', this.user)
+              this.user.profile = currentUser;
+              this.getUserChannels(fbUser);
+            }else{
+              let currentUser = this.object_init.initializeUser1(user.profile)
+              this.user = user;
+              this.user.profile = currentUser;
+            }
+          }) 
+        })
+        }else{
+            this.local_db.getSchool().then(school =>{
           this.remote_sync.getSchool(school.id).subscribe(syncedSchool =>{
-              console.log(syncedSchool);
+              console.log('synched school: ', syncedSchool);
             if(syncedSchool){
               let currentUser = this.object_init.initializeUser1(syncedSchool.profile);
               this.user = syncedSchool;
@@ -133,9 +171,9 @@ export class ChatsPage {
             }
           })
         })
+        }
       }
     })
-  	
   }
 
   updateUser(){

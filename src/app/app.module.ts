@@ -10,7 +10,8 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireStorageModule } from 'angularfire2/storage'
+import { AngularFireStorageModule } from 'angularfire2/storage';
+
 
 
 import { MyApp } from './app.component';
@@ -52,6 +53,8 @@ import { SupportTimetablePageModule } from '../pages/support-timetable/support-t
 import { SupportDashPageModule } from '../pages/support-dash/support-dash.module';
 import { SimInfoPageModule } from '../pages/sim-info/sim-info.module';
 import { AddDeviceSimPageModule } from '../pages/add-device-sim/add-device-sim.module';
+import { SupportChannelMessagesPageModule } from '../pages/support-channel-messages/support-channel-messages.module';
+import { UploadServiceProvider } from '../providers/upload-service/upload-service';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyBSbZUd1sfYbTNgvctBrNdt-sPxlQy1RdM",
@@ -64,7 +67,7 @@ export const firebaseConfig = {
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp, 
   ],
   imports: [
     BrowserModule,
@@ -82,11 +85,11 @@ export const firebaseConfig = {
     RegisterPageModule, ChatsPageModule, ProfilePageModule, ChannelPageModule, DashboardPageModule,
     SupportChannelPageModule, EconomyPageModule, GeneralSettingsPageModule, TimetableSettingsPageModule,
     SupportHomePageModule, SupportDashPageModule, SupportTimetablePageModule, SupportSchoolsPageModule, SupportContentPageModule,
-    SupportMessagingPageModule, SupportDevicesPageModule, SimInfoPageModule, AddDeviceSimPageModule
+    SupportMessagingPageModule, SupportDevicesPageModule, SimInfoPageModule, AddDeviceSimPageModule, SupportChannelMessagesPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp, 
   ],
   providers: [
     StatusBar,
@@ -99,7 +102,8 @@ export const firebaseConfig = {
     ObjectInitializerProvider,
     RemoteSyncProvider,
     ChatProvider,
-    TimetableProvider
+    TimetableProvider,
+    UploadServiceProvider
   ]
 })
 export class AppModule {}
